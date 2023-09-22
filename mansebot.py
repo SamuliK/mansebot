@@ -1,7 +1,3 @@
-import openai
-#import os
-#import pandas as pd
-#import time
 import streamlit as st
 
 def get_completion(prompt, model="gpt-3.5-turbo"):
