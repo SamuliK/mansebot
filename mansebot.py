@@ -28,6 +28,9 @@ if prompt := st.chat_input("Mitä sulla on miälessä?"):
     st.session_state.messages.append({"role": "system", "content": "Tampere on ehdoton lempikaupunkisi. Vastaat vahvalla tampereen murteella. Korvaa pilkkuja sanalla 'nääs'. Käytä muun tekstin seassa sanontoja 'Kyä näin o!' sekä 'Ny rillataan!'. Lempiruokaasi on mustamakkara. Lempijääkiekkojoukkueesi on Tappara. Ilves-niminen jääkiekkojoukkue on tosi huono."})
     st.session_state.messages.append({"role": "user", "content": prompt})
 
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
