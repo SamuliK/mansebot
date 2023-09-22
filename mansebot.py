@@ -1,3 +1,4 @@
+import openai
 import streamlit as st
 
 def get_completion(prompt, model="gpt-3.5-turbo"):
