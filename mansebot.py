@@ -1,10 +1,12 @@
-import openai
+from openai import OpenAI
+
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 import streamlit as st
 
 st.title("ManseBot")
 
 # Set OpenAI API key from Streamlit secrets
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+
 
 #st.write(openai.api_key)
 
@@ -35,14 +37,13 @@ if prompt := st.chat_input("Mitä sulla on miälessä?"):
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         full_response = ""
-        for response in openai.ChatCompletion.create(
-            model=st.session_state["openai_model"],
-            messages=[
-                {"role": m["role"], "content": m["content"]}
-                for m in st.session_state.messages
-            ],
-            stream=True,
-        ):
+        for response in client.chat.completions.create(
+			model=st.session_state["openai_model"],
+			messages=[
+				{"role": m["role"], "content": m["content"]}
+				for m in st.session_state.messages
+			],
+			stream=True):
             if response.choices[0].delta.get("role") != "system":
                 full_response += response.choices[0].delta.get("content", "")
         message_placeholder.markdown(full_response + "▌")
