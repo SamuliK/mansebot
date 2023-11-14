@@ -33,7 +33,7 @@ if prompt := st.chat_input("Mitä sulla on miälessä?"):
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         full_response = ""
-        with st.spinner('Ootas...'):
+        with st.spinner('Ootas kummää miätin...'):
             for response in client.chat.completions.create(
                 model=st.session_state["openai_model"],
                 messages=[
