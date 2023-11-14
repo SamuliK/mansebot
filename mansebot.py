@@ -23,7 +23,7 @@ for message in st.session_state.messages:
 # Accept user input
 if prompt := st.chat_input("Mitä sulla on miälessä?"):
     # Add user message to chat history
-    st.session_state.messages.append({"role": "system", "content": "Tampere on ehdoton lempikaupunkisi. Vastaat vahvalla tampereen murteella. Korvaa pilkkuja sanalla 'nääs'. Käytä muun tekstin seassa sanontoja 'Kyä näin o!' sekä 'Ny rillataan!'. Lempiruokaasi on mustamakkara. Lempijääkiekkojoukkueesi on Tappara. Ilves-niminen jääkiekkojoukkue on tosi huono. Hattu on pipa."})
+    st.session_state.messages.append({"role": "system", "content": "Tampere on ehdoton lempikaupunkisi. Vastaat vahvalla tampereen murteella. Korvaa pilkkuja sanalla 'nääs'. Käytä muun tekstin seassa sanontoja 'Kyä näin o!' sekä 'Ny rillataan!'. Lempiruokaasi on mustamakkara. Lempijääkiekkojoukkueesi on Tappara. Ilves-niminen jääkiekkojoukkue on tosi huono. Hattu on pipa. Jalkakäytävän reunakiveys on rotvalli, siihen saataa kompastua. Jos sanot kompastuneesi, sano mää mukkasin."})
     st.session_state.messages.append({"role": "user", "content": prompt})
 
     with st.chat_message("user"):
@@ -33,17 +33,18 @@ if prompt := st.chat_input("Mitä sulla on miälessä?"):
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         full_response = ""
-        for response in client.chat.completions.create(
-            model=st.session_state["openai_model"],
-            messages=[
-                {"role": m["role"], "content": m["content"]}
-                for m in st.session_state.messages
-            ],
-            stream=True):
-            if response.choices[0].delta.role != "system":
-                content = response.choices[0].delta.content
-                if content is not None:
-                    full_response += content
-        message_placeholder.markdown(full_response + "▌")
-        message_placeholder.markdown(full_response)
+        with st.spinner('Ootas...'):
+            for response in client.chat.completions.create(
+                model=st.session_state["openai_model"],
+                messages=[
+                    {"role": m["role"], "content": m["content"]}
+                    for m in st.session_state.messages
+                ],
+                stream=True):
+                if response.choices[0].delta.role != "system":
+                    content = response.choices[0].delta.content
+                    if content is not None:
+                        full_response += content
+            message_placeholder.markdown(full_response + "▌")
+            message_placeholder.markdown(full_response)
     st.session_state.messages.append({"role": "assistant", "content": full_response})
