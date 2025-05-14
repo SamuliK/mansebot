@@ -1,8 +1,10 @@
+import openai
 from openai import OpenAI
 import streamlit as st
 
 # Set OpenAI API key from Streamlit secrets
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+openai.api_key = st.secrets["OPENAI_API_KEY"]
+client = OpenAI()
 
 st.title("ManseBot")
 
